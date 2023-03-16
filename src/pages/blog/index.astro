@@ -1,0 +1,24 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+let res = await fetch(
+  `https://${import.meta.env.WORDPRESS_URL}/wp-json/wp/v2/dinos`
+);
+let posts = await res.json();
+---
+
+<Layout title="Games Garden Blog">
+  <section>
+    <h1>List of Dinosaurs</h1>
+    {
+      posts.map((post: any) => (
+        <article>
+          <h2>
+            <a href={`/blog/${post.slug}/`} set:html={post.title.rendered} />
+          </h2>
+          <Fragment set:html={post.content.rendered} />
+        </article>
+      ))
+    }
+  </section>
+</Layout>
